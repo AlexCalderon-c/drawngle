@@ -2,3 +2,6 @@ node_modules
 .opencode
 AGENTS.md
 MEMORY.md
+.agents
+opencode.json
+specs
