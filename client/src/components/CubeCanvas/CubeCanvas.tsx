@@ -1,5 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei'
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -34,7 +35,7 @@ class WebGLErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryStat
 
 function CubeMesh() {
   return (
-    <mesh rotation={[0.61, 0.78, 0]}>
+    <mesh>
       <boxGeometry args={[2, 2, 2]} />
       <meshBasicMaterial color="#eee" />
     </mesh>
@@ -43,16 +44,17 @@ function CubeMesh() {
 
 export function CubeCanvas() {
   return (
-    <div className="w-full h-full relative" role="region" aria-label="3D Viewport">
+    <div className="w-full h-full relative z-100 triangle-form" role="region" aria-label="3D Viewport">
       <WebGLErrorBoundary>
         <Canvas
-          gl={{ alpha: true, antialias: true }}
+          gl={{ alpha: false, powerPreference: "high-performance" }}
           dpr={[1, 2]}
-          camera={{ position: [0, 0, 5], fov: 50 }}
+          camera={{ position: [0, 7, 0], fov: 50 }}
           style={{ background: 'transparent' }}
         >
           <ambientLight intensity={1} />
           <CubeMesh />
+          <OrbitControls enableRotate={true}/>
         </Canvas>
       </WebGLErrorBoundary>
     </div>

@@ -14,7 +14,7 @@ export function ReferencesPanel() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto grid grid-cols-2 gap-3 pr-1">
+      <div className="flex-1 overflow-y-auto grid grid-cols-4 gap-3 pr-1">
         {skeletonCards.map((_, index) => (
           <div
             key={index}
