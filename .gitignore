@@ -5,3 +5,4 @@ MEMORY.md
 .agents
 opencode.json
 specs
+.env
