@@ -9,58 +9,45 @@ export function ReferencesPanel() {
     loading,
     error,
     hasMore,
-    searchImages,
+    formInput,
     loadMore,
     setSelectedImageIndex,
-    clearError
+    clearError,
+    setFormInput
   } = useSearchStore();
-
-  const [localInput, setLocalInput] = useState(query);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    searchImages(localInput);
-  };
 
   const skeletonCards = Array.from({ length: 6 });
 
   return (
-    <aside className="w-full h-full bg-zinc-950 border-l border-zinc-800 flex flex-col p-4 text-zinc-200" aria-label="Reference Panel">
+    <aside className="min-w-full min-h-full max-w-full max-h-full bg-zinc-950 border-l border-zinc-800 flex flex-col p-4 text-zinc-200" aria-label="Reference Panel">
       <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-800">
         <h2 className="text-sm font-medium tracking-wide uppercase text-zinc-400">Reference Library</h2>
         <span className="text-xs text-zinc-500">{images.length} loaded</span>
       </div>
 
-      <form onSubmit={handleSearch} className="mb-4 space-y-2">
+      <div className="mb-4 space-y-2">
         <div className="flex space-x-2">
           <input
             type="text"
-            value={localInput}
+            value={formInput}
             onChange={(e) => {
-              setLocalInput(e.target.value);
+              setFormInput(e.target.value);
               if (error) clearError();
             }}
             placeholder="Search references on Unsplash..."
             className="flex-1 h-9 bg-zinc-900 border border-zinc-800 rounded-md px-3 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500"
           />
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-4 h-9 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-800 text-white rounded-md text-xs font-semibold transition"
-          >
-            {loading ? 'Searching...' : 'Search'}
-          </button>
         </div>
         {error && (
           <p className="text-xs text-red-400 mt-1" role="alert">
             {error}
           </p>
         )}
-      </form>
+      </div>
 
       {/* Reference Grid */}
       <div className="flex-1 overflow-y-scroll pr-1 space-y-4">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-4 gap-3">
           {images.map((img, index) => (
             <div
               key={img.id + index}

@@ -25,7 +25,9 @@ interface SearchState {
   error: string | null;
   hasMore: boolean;
   selectedImageIndex: number | null;
+  formInput: string;
   setQuery: (query: string) => void;
+  setFormInput: (formInput: string) => void;
   searchImages: (query: string) => Promise<void>;
   loadMore: () => Promise<void>;
   setSelectedImageIndex: (index: number | null) => void;
@@ -42,8 +44,10 @@ export const useSearchStore = create<SearchState>((set, get) => ({
   error: null,
   hasMore: true,
   selectedImageIndex: null,
+  formInput: '',
 
   setQuery: (query: string) => set({ query }),
+  setFormInput: (formInput: string) => set({ formInput }),
 
   clearError: () => set({ error: null }),
 

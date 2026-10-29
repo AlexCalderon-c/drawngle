@@ -44,7 +44,7 @@ function CubeMesh() {
 
 export function CubeCanvas() {
   return (
-    <div className="w-full h-full relative z-100 triangle-form" role="region" aria-label="3D Viewport">
+    <div className="w-full h-[80%] max-h-full  relative z-100 triangle-form" role="region" aria-label="3D Viewport">
       <WebGLErrorBoundary>
         <Canvas
           gl={{ alpha: false, powerPreference: "high-performance" }}
