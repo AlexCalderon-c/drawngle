@@ -1,6 +1,7 @@
-import { Component, type ErrorInfo, type ReactNode } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Component, type ErrorInfo, type ReactNode, useRef } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei'
+import { Mesh } from 'three';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -34,22 +35,40 @@ class WebGLErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryStat
 }
 
 function CubeMesh() {
+  const meshBox = useRef<Mesh>(null)
+  useFrame(() => {
+    if(meshBox.current){
+      console.log("Current radians:", meshBox.current.rotation.y);
+    }
+
+  })
+
+  const boxMaterial = [
+    <meshStandardMaterial attach="material-0" color={"#aaa"} key="right"/>,
+    <meshStandardMaterial attach="material-1" color={"#fff"} key="left"/>,
+    <meshStandardMaterial attach="material-2" color={"#999"} key="top"/>,
+    <meshStandardMaterial attach="material-3" color={"#666"} key="bottom"/>,
+    <meshStandardMaterial attach="material-4" color={"#ccc"} key="front"/>,
+    <meshStandardMaterial attach="material-5" color={"#ddd"} key="back"/>,
+
+  ]
   return (
     <mesh>
       <boxGeometry args={[2, 2, 2]} />
-      <meshBasicMaterial color="#eee" />
+      {boxMaterial}
     </mesh>
   );
 }
 
 export function CubeCanvas() {
+  
   return (
     <div className="w-full h-[80%] max-h-full  relative z-100 triangle-form" role="region" aria-label="3D Viewport">
       <WebGLErrorBoundary>
         <Canvas
           gl={{ alpha: false, powerPreference: "high-performance" }}
           dpr={[1, 2]}
-          camera={{ position: [0, 7, 0], fov: 50 }}
+          camera={{ position: [10, 0, 0], fov: 50 }}
           style={{ background: 'transparent' }}
         >
           <ambientLight intensity={1} />
