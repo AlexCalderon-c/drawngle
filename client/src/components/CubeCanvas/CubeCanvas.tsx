@@ -1,7 +1,8 @@
-import { Component, type ErrorInfo, type ReactNode, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei'
+import { Component, type ErrorInfo, type ReactNode, useEffect, useCallback, useState } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { TransformControls } from '@react-three/drei'
 import { Mesh } from 'three';
+import { useSearchStore } from '../../store/useSearchStore';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -34,29 +35,40 @@ class WebGLErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryStat
   }
 }
 
-function CubeMesh() {
-  const meshBox = useRef<Mesh>(null)
-  useFrame(() => {
-    if(meshBox.current){
-      console.log("Current radians:", meshBox.current.rotation.y);
-    }
-
-  })
-
-  const boxMaterial = [
+const boxMaterial = [
     <meshStandardMaterial attach="material-0" color={"#aaa"} key="right"/>,
     <meshStandardMaterial attach="material-1" color={"#fff"} key="left"/>,
     <meshStandardMaterial attach="material-2" color={"#999"} key="top"/>,
     <meshStandardMaterial attach="material-3" color={"#666"} key="bottom"/>,
     <meshStandardMaterial attach="material-4" color={"#ccc"} key="front"/>,
     <meshStandardMaterial attach="material-5" color={"#ddd"} key="back"/>,
+]
 
-  ]
+function CubeMesh() {
+
+  const [mesh, setMesh] = useState<Mesh | null>(null)
+
+  const {
+    setRotation
+  } = useSearchStore()  
+
+  const transformHandler = useCallback(() => {
+    if (mesh){
+      const newRotation = mesh.rotation.y
+      setRotation(newRotation)
+      console.log('Nueva rotación Y:', newRotation)
+    }
+  }, [mesh, setRotation])
+
+  
   return (
-    <mesh>
-      <boxGeometry args={[2, 2, 2]} />
-      {boxMaterial}
-    </mesh>
+    <>
+      {mesh && <TransformControls object={mesh} onMouseUp={transformHandler} enabled={true} mode='rotate' />}
+      <mesh ref={setMesh}>
+        <boxGeometry args={[2, 2, 2]} />
+        {boxMaterial}
+      </mesh>
+    </>
   );
 }
 
@@ -72,8 +84,7 @@ export function CubeCanvas() {
           style={{ background: 'transparent' }}
         >
           <ambientLight intensity={1} />
-          <CubeMesh />
-          <OrbitControls enableRotate={true}/>
+            <CubeMesh/>
         </Canvas>
       </WebGLErrorBoundary>
     </div>

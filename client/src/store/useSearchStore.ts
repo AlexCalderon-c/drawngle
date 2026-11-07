@@ -26,6 +26,8 @@ interface SearchState {
   hasMore: boolean;
   selectedImageIndex: number | null;
   formInput: string;
+  rotation: number;
+  setRotation: (rotation: number) => void
   setQuery: (query: string) => void;
   setFormInput: (formInput: string) => void;
   searchImages: (query: string) => Promise<void>;
@@ -45,12 +47,11 @@ export const useSearchStore = create<SearchState>((set, get) => ({
   hasMore: true,
   selectedImageIndex: null,
   formInput: '',
-
+  rotation: 0,
+  setRotation: (rotation: number) => set({rotation}),
   setQuery: (query: string) => set({ query }),
   setFormInput: (formInput: string) => set({ formInput }),
-
   clearError: () => set({ error: null }),
-
   searchImages: async (newQuery: string) => {
     const trimmed = newQuery.trim();
     if (!trimmed) {

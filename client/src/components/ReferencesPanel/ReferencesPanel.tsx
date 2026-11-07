@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import { useSearchStore } from '../../store/useSearchStore';
 import { ImageModal } from '../ImageModal/ImageModal';
 
 export function ReferencesPanel() {
   const {
-    query,
     images,
     loading,
     error,
@@ -13,7 +11,8 @@ export function ReferencesPanel() {
     loadMore,
     setSelectedImageIndex,
     clearError,
-    setFormInput
+    setFormInput,
+    rotation
   } = useSearchStore();
 
   const skeletonCards = Array.from({ length: 6 });
@@ -23,6 +22,7 @@ export function ReferencesPanel() {
       <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-800">
         <h2 className="text-sm font-medium tracking-wide uppercase text-zinc-400">Reference Library</h2>
         <span className="text-xs text-zinc-500">{images.length} loaded</span>
+        <span className="text-xs text-zinc-500">Current angle: {rotation}°</span>
       </div>
 
       <div className="mb-4 space-y-2">
