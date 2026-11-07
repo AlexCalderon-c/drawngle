@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { TransformControls } from '@react-three/drei'
 import { Mesh } from 'three';
 import { useSearchStore } from '../../store/useSearchStore';
+import { getAngleCategory, getSearchTag } from '../../utils/angleDetection';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -36,12 +37,12 @@ class WebGLErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryStat
 }
 
 const boxMaterial = [
-    <meshStandardMaterial attach="material-0" color={"#aaa"} key="right"/>,
-    <meshStandardMaterial attach="material-1" color={"#fff"} key="left"/>,
-    <meshStandardMaterial attach="material-2" color={"#999"} key="top"/>,
-    <meshStandardMaterial attach="material-3" color={"#666"} key="bottom"/>,
-    <meshStandardMaterial attach="material-4" color={"#ccc"} key="front"/>,
-    <meshStandardMaterial attach="material-5" color={"#ddd"} key="back"/>,
+    <meshStandardMaterial attach="material-0" color={"blue"} key="front"/>,
+    <meshStandardMaterial attach="material-1" color={"red"} key="back"/>,
+    <meshStandardMaterial attach="material-2" color={"yellow"} key="top"/>,
+    <meshStandardMaterial attach="material-3" color={"green"} key="bottom"/>,
+    <meshStandardMaterial attach="material-4" color={"orange"} key="right"/>,
+    <meshStandardMaterial attach="material-5" color={"purple"} key="left"/>,
 ]
 
 function CubeMesh() {
@@ -55,8 +56,9 @@ function CubeMesh() {
   const transformHandler = useCallback(() => {
     if (mesh){
       const newRotation = mesh.rotation.y
-      setRotation(newRotation)
-      console.log('Nueva rotación Y:', newRotation)
+      const angleCategory = getAngleCategory(newRotation)
+      const tagValue = getSearchTag(angleCategory)
+      setRotation(tagValue)
     }
   }, [mesh, setRotation])
 
