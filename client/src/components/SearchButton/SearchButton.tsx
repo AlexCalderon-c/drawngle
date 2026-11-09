@@ -5,12 +5,18 @@ function SearchButton() {
 
   const {
     formInput,
-    searchImages
+    searchImages,
+    queryModel
   } = useSearchStore()
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    searchImages(formInput);
+    if(queryModel){
+      searchImages(queryModel);
+    }else{
+      searchImages(formInput);
+    }
+    
   };
 
   return (

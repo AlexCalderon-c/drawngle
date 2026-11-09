@@ -21,13 +21,10 @@ const ANGLE_MAP = [
 ];
 
 export const getAngleCategory = (radian: number): AngleCategory => {
-  // 1. Convert radians to degrees
   const degrees = (radian * (180 / Math.PI));
   
-  // 2. Normalize to 0-360 range
   const normalized = ((degrees % 360) + 360) % 360;
   
-  // 3. Find category in map
   const found = ANGLE_MAP.find(range => 
     normalized >= range.min && normalized < range.max
   );

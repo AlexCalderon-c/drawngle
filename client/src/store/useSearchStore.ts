@@ -27,6 +27,8 @@ interface SearchState {
   selectedImageIndex: number | null;
   formInput: string;
   rotation: string;
+  queryModel: string;
+  setQueryModel: (queryModel: string) => void;
   setRotation: (rotation: string) => void
   setQuery: (query: string) => void;
   setFormInput: (formInput: string) => void;
@@ -48,6 +50,8 @@ export const useSearchStore = create<SearchState>((set, get) => ({
   selectedImageIndex: null,
   formInput: '',
   rotation: '',
+  queryModel: '',
+  setQueryModel: (queryModel: string) => set({queryModel}),
   setRotation: (rotation: string) => set({rotation}),
   setQuery: (query: string) => set({ query }),
   setFormInput: (formInput: string) => set({ formInput }),
