@@ -12,8 +12,11 @@ function SearchButton() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if(queryModel){
+      console.log('DEL MODELO')
       searchImages(queryModel);
     }else{
+      console.log('DEL INPUT')
+
       searchImages(formInput);
     }
     

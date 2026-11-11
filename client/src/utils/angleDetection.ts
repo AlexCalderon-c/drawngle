@@ -1,3 +1,5 @@
+import { type Vector3 } from "three";
+
 export type AngleCategory = 
   | 'Front' 
   | '3/4 Right' 
@@ -20,10 +22,15 @@ const ANGLE_MAP = [
   { min: 292.5, max: 337.5, category: '3/4 Left' },
 ];
 
-export const getAngleCategory = (radian: number): AngleCategory => {
-  const degrees = (radian * (180 / Math.PI));
+export const getAngleCategory = (forwardVector: Vector3): AngleCategory => {
+
+  const radians = Math.atan2(forwardVector.x, forwardVector.z)
+
+  const degrees = (radians * (180 / Math.PI));
   
   const normalized = ((degrees % 360) + 360) % 360;
+
+  console.log(normalized)
   
   const found = ANGLE_MAP.find(range => 
     normalized >= range.min && normalized < range.max
