@@ -56,7 +56,6 @@ function CubeMesh() {
 
   const transformHandler = useCallback(() => {
     if (mesh){
-      const newRotation = mesh.rotation.y
       const vector = new Vector3()
       mesh.getWorldDirection(vector)
       const angleCategory = getAngleCategory(vector)

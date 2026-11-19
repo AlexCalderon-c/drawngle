@@ -10,7 +10,7 @@ export type AngleCategory =
   | 'Profile Left' 
   | '3/4 Left';
 
-const ANGLE_MAP = [
+const YAW_MAP = [
   { min: 337.5, max: 360, category: 'Front' },
   { min: 0, max: 22.5, category: 'Front' },
   { min: 22.5, max: 67.5, category: '3/4 Right' },
@@ -24,15 +24,19 @@ const ANGLE_MAP = [
 
 export const getAngleCategory = (forwardVector: Vector3): AngleCategory => {
 
-  const radians = Math.atan2(forwardVector.x, forwardVector.z)
+  const yaw = Math.atan2(forwardVector.x, forwardVector.z)
+  const pitch = Math.asin(forwardVector.y)
 
-  const degrees = (radians * (180 / Math.PI));
+  const degrees = (yaw * (180 / Math.PI));
   
   const normalized = ((degrees % 360) + 360) % 360;
 
-  console.log(normalized)
+  const pitchDegrees = pitch * (180 / Math.PI);
+  const pitchNormalized = ((pitchDegrees % 360) + 360) % 360;
+
+  console.log(pitchNormalized)
   
-  const found = ANGLE_MAP.find(range => 
+  const found = YAW_MAP.find(range => 
     normalized >= range.min && normalized < range.max
   );
   
