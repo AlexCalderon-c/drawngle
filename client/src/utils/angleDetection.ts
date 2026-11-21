@@ -1,6 +1,6 @@
 import { type Vector3 } from "three";
 
-export type AngleCategory = 
+export type YawCategory = 
   | 'Front' 
   | '3/4 Right' 
   | 'Profile Right' 
@@ -9,6 +9,13 @@ export type AngleCategory =
   | '3/4 Back Left' 
   | 'Profile Left' 
   | '3/4 Left';
+
+export type PitchCategory = 'Up' | 'Center' | 'Down';
+
+export interface AngleResult {
+  yaw: YawCategory;
+  pitch: PitchCategory;
+}
 
 const YAW_MAP = [
   { min: 337.5, max: 360, category: 'Front' },
@@ -22,29 +29,26 @@ const YAW_MAP = [
   { min: 292.5, max: 337.5, category: '3/4 Left' },
 ];
 
-export const getAngleCategory = (forwardVector: Vector3): AngleCategory => {
-
-  const yaw = Math.atan2(forwardVector.x, forwardVector.z)
-  const pitch = Math.asin(forwardVector.y)
-
-  const degrees = (yaw * (180 / Math.PI));
+export const getAngleCategory = (forwardVector: Vector3): AngleResult => {
+  // Yaw
+  const yaw = Math.atan2(forwardVector.x, forwardVector.z);
+  const yawDegrees = ((yaw * (180 / Math.PI) % 360) + 360) % 360;
   
-  const normalized = ((degrees % 360) + 360) % 360;
+  const yawCategory = YAW_MAP.find(range => 
+    yawDegrees >= range.min && yawDegrees < range.max
+  )?.category || 'Front';
 
-  const pitchDegrees = pitch * (180 / Math.PI);
-  const pitchNormalized = ((pitchDegrees % 360) + 360) % 360;
+  const pitch = Math.asin(forwardVector.y) * (180 / Math.PI);
+  let pitchCategory: PitchCategory = 'Center';
+  if (pitch > 20) pitchCategory = 'Up';
+  else if (pitch < -20) pitchCategory = 'Down';
+  console.log(pitch)
 
-  console.log(pitchNormalized)
-  
-  const found = YAW_MAP.find(range => 
-    normalized >= range.min && normalized < range.max
-  );
-  
-  return found ? (found.category as AngleCategory) : 'Front';
+  return { yaw: yawCategory as YawCategory, pitch: pitchCategory };
 };
 
-export const getSearchTag = (category: AngleCategory): string => {
-  const map: Record<AngleCategory, string> = {
+export const getSearchTag = (angle: AngleResult): string => {
+  const yawMap: Record<YawCategory, string> = {
     'Front': 'portrait head front view',
     '3/4 Right': 'portrait head 3/4 view right',
     'Profile Right': 'portrait head profile view right',
@@ -54,5 +58,12 @@ export const getSearchTag = (category: AngleCategory): string => {
     'Profile Left': 'portrait head profile view left',
     '3/4 Left': 'portrait head 3/4 view left',
   };
-  return map[category];
+
+  const pitchMap: Record<PitchCategory, string> = {
+    'Up': 'looking up',
+    'Center': '',
+    'Down': 'looking down'
+  };
+
+  return `${yawMap[angle.yaw]} ${pitchMap[angle.pitch]}`;
 };

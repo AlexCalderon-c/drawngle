@@ -22,7 +22,7 @@ export function ReferencesPanel() {
       <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-800">
         <h2 className="text-sm font-medium tracking-wide uppercase text-zinc-400">Reference Library</h2>
         <span className="text-xs text-zinc-500">{images.length} loaded</span>
-        <span className="text-xs text-zinc-500">Current angle: {rotation}°</span>
+        <span className="text-xs text-zinc-500">Angle: {rotation}</span>
       </div>
 
       <div className="mb-4 space-y-2">

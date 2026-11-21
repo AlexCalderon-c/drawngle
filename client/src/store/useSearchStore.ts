@@ -29,7 +29,8 @@ interface SearchState {
   rotation: string;
   queryModel: string;
   setQueryModel: (queryModel: string) => void;
-  setRotation: (rotation: string) => void
+  setRotation: (rotation: string) => void;
+  setAngle: (angle: { yaw: string, pitch: string }) => void;
   setQuery: (query: string) => void;
   setFormInput: (formInput: string) => void;
   searchImages: (query: string) => Promise<void>;
@@ -53,6 +54,7 @@ export const useSearchStore = create<SearchState>((set, get) => ({
   queryModel: '',
   setQueryModel: (queryModel: string) => set({queryModel}),
   setRotation: (rotation: string) => set({rotation}),
+  setAngle: (angle: { yaw: string, pitch: string }) => set({ rotation: `${angle.yaw} ${angle.pitch}` }),
   setQuery: (query: string) => set({ query }),
   setFormInput: (formInput: string) => set({ formInput }),
   clearError: () => set({ error: null }),

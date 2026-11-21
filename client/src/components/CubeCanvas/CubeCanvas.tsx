@@ -1,4 +1,4 @@
-import { Component, type ErrorInfo, type ReactNode, useEffect, useCallback, useState } from 'react';
+import { Component, type ErrorInfo, type ReactNode, useCallback, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { TransformControls } from '@react-three/drei'
 import { Mesh, Vector3 } from 'three';
@@ -46,13 +46,8 @@ const boxMaterial = [
 ]
 
 function CubeMesh() {
-
   const [mesh, setMesh] = useState<Mesh | null>(null)
-
-  const {
-    setRotation,
-    setQueryModel
-  } = useSearchStore()  
+  const { setRotation, setQueryModel } = useSearchStore()  
 
   const transformHandler = useCallback(() => {
     if (mesh){
@@ -63,9 +58,8 @@ function CubeMesh() {
       setRotation(tagValue)
       setQueryModel(tagValue)
     }
-  }, [mesh, setRotation])
+  }, [mesh, setRotation, setQueryModel])
 
-  
   return (
     <>
       {mesh && <TransformControls object={mesh} onMouseUp={transformHandler} enabled={true} mode='rotate' />}
@@ -78,18 +72,17 @@ function CubeMesh() {
 }
 
 export function CubeCanvas() {
-  
   return (
     <div className="w-full h-[80%] max-h-full  relative z-100 triangle-form" role="region" aria-label="3D Viewport">
       <WebGLErrorBoundary>
         <Canvas
           gl={{ alpha: false, powerPreference: "high-performance" }}
           dpr={[1, 2]}
-          camera={{ position: [10, 0, 0], fov: 50 }}
+          camera={{ position: [0, 0, 10], fov: 50 }}
           style={{ background: 'transparent' }}
         >
           <ambientLight intensity={1} />
-            <CubeMesh/>
+          <CubeMesh />
         </Canvas>
       </WebGLErrorBoundary>
     </div>
