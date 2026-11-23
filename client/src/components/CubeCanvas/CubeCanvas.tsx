@@ -76,7 +76,7 @@ export function CubeCanvas() {
     <div className="w-full h-[80%] max-h-full  relative z-100 triangle-form" role="region" aria-label="3D Viewport">
       <WebGLErrorBoundary>
         <Canvas
-          gl={{ alpha: false, powerPreference: "high-performance" }}
+          gl={{ alpha: false, powerPreference: "high-performance", preserveDrawingBuffer: true }}
           dpr={[1, 2]}
           camera={{ position: [0, 0, 10], fov: 50 }}
           style={{ background: 'transparent' }}
